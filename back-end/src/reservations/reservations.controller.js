@@ -10,22 +10,44 @@ function isValidDate(dateString) {
   const boolCheck =
     dateArr.length === 3 &&
     dateArr[0].length === 4 &&
-    (dateArr[1].length === 2) && (dateArr[2].length === 2);
+    dateArr[1].length === 2 &&
+    dateArr[2].length === 2;
   return boolCheck ? true : false;
 }
+
+async function reservationWeekdayValidation(req, res, next) {
+  const date = new Date(req.body.data.reservation_date);
+  const isTuesday = date.getUTCDay();
+  if (isTuesday === 2) {
+    return next({
+      status: 400,
+      message:
+        "reservation_date cannot be Tuesday when the restaurant is closed",
+    });
+  }
+  let now = new Date();
+  let reservationDateTime = new Date(
+    `${req.body.data.reservation_date}T${req.body.data.reservation_time}`
+  );
+  if (reservationDateTime < now) {
+    return next({
+      status: 400,
+      message: "reservation_date must be in the future",
+    });
+  }
+  return next();
+}
 function isValidTime(timeString) {
-  const timeArr= timeString.split(":");
+  const timeArr = timeString.split(":");
   const boolCheck =
-   timeArr.length === 2 &&
-    timeArr[0].length === 2 &&
-    (timeArr[1].length === 2);
+    timeArr.length === 2 && timeArr[0].length === 2 && timeArr[1].length === 2;
   return boolCheck ? true : false;
 }
 async function list(req, res) {
   const date = req.query.date;
   const data = await service.list(date);
   res.json({
-   data
+    data,
   });
 }
 
@@ -65,7 +87,11 @@ async function hasProps(req, res, next) {
       message: "Reservation must include a valid reservation_date",
     });
   }
-  if (!reservation_time || reservation_time === ""||!isValidTime(reservation_time)) {
+  if (
+    !reservation_time ||
+    reservation_time === "" ||
+    !isValidTime(reservation_time)
+  ) {
     next({
       status: 400,
       message: "Reservation must include a valid reservation_time",
@@ -81,11 +107,11 @@ async function hasProps(req, res, next) {
 }
 
 async function create(req, res) {
-  const data = await service.create(req.body.data); 
+  const data = await service.create(req.body.data);
   data.people = Number(data.people);
   res.status(201).json({ data });
 }
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasProps, asyncErrorBoundary(create)],
+  create: [hasProps, reservationWeekdayValidation, asyncErrorBoundary(create)],
 };
