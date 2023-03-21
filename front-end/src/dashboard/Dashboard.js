@@ -26,7 +26,7 @@ function Dashboard({ date }) {
   const [reservationsError, setReservationsError] = useState(null);
 
   useEffect(loadDashboard, [date]);
-  // useEffect(loadTables, []);
+  useEffect(loadTables, []);
 
   function loadDashboard() {
     const abortController = new AbortController();
@@ -36,12 +36,12 @@ function Dashboard({ date }) {
       .catch(setReservationsError);
     return () => abortController.abort();
   }
-  // function loadTables() {
-  //   const abortController = new AbortController();
-  //   setReservationsError(null);
-  //   listTables(abortController.signal).then(setTables).catch(setReservationsError);
-  //   return () => abortController.abort();
-  // }
+  function loadTables() {
+    const abortController = new AbortController();
+    setReservationsError(null);
+    listTables(abortController.signal).then(setTables).catch(setReservationsError);
+    return () => abortController.abort();
+  }
   const history = useHistory();
 
   function pushDate(dateToMove) {
@@ -121,25 +121,25 @@ function Dashboard({ date }) {
     );
   });
 
- // let displayTables = tables.map((table) => {
-  //   console.log(table);
-  //   return (
-  //     <tr
-  //       className="p-2 m-2 hover:bg-gray-300 bg-gray-200"
-  //       key={table.table_id}
-  //     >
-  //       <td className="p-2 m-2">{table.table_id}</td>
-  //       <td className="p-2 m-2">{table.table_name}</td>
-  //       <td className="p-2 m-2">{table.capacity}</td>
-  //       <td className="p-2 m-2" data-table-id-status={table.table_id}>
-  //         {table.reservation_id ? "Occupied" : "Free"}
-  //       </td>
-  //       <td>
-  //         {table.reservation_id ? <p></p> : null}
-  //       </td>
-  //     </tr>
-  //   );
-  // });
+ let displayTables = tables.map((table) => {
+    console.log(table);
+    return (
+      <tr
+        className="p-2 m-2 hover:bg-gray-300 bg-gray-200"
+        key={table.table_id}
+      >
+        <td className="p-2 m-2">{table.table_id}</td>
+        <td className="p-2 m-2">{table.table_name}</td>
+        <td className="p-2 m-2">{table.capacity}</td>
+        <td className="p-2 m-2" data-table-id-status={table.table_id}>
+          {table.reservation_id ? "Occupied" : "Free"}
+        </td>
+        <td>
+          {table.reservation_id ? <p></p> : null}
+        </td>
+      </tr>
+    );
+  });
 
   return (
     <main className="min-h-screen font-Staatliches">
@@ -190,7 +190,38 @@ function Dashboard({ date }) {
             </div>
           </div>
         </div>
-    
+        <div className="p-4 m-5">
+          <h1 className="text-4xl text-center"> Tables</h1>
+          <br></br>
+          <div className="container flex justify-center mx-auto">
+            <div className="flex flex-col">
+              <div className="w-full">
+                <div className="border-b border-gray-200 shadow">
+                  <table className="text-center text-xl divide-y divide-gray-300 ">
+                    <thead className="font-Inconsolata bg-gray-50">
+                      <tr>
+                        <th className="px-6 py-2 text-l text-gray-500">ID</th>
+                        <th className="px-6 py-2 text-l text-gray-500">
+                          Table Name
+                        </th>
+                        <th className="px-6 py-2 text-l text-gray-500">
+                          Capacity
+                        </th>
+                        <th className="px-6 py-2 text-l text-gray-500">
+                          Status
+                        </th>
+                        <th className="px-6 py-2 text-l text-gray-500">
+                          Open Table
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody className="font-Inconsolata">{displayTables}</tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
         <div className="m-auto pb-20">
           <button
             className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"

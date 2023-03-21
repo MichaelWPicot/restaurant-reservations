@@ -33,8 +33,6 @@ describe("US-01 - Create and list reservations - E2E", () => {
 
   describe("/reservations/new page", () => {
     test("filling and submitting form creates a new reservation and then displays the dashboard for the reservation date", async () => {
-      const lastName = Date.now().toString(10);
-
       await page.type("input[name=first_name]", "James");
       await page.type("input[name=last_name]", "123123");
       await page.type("input[name=mobile_number]", "800-555-1212");

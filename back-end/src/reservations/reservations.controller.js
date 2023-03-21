@@ -14,7 +14,47 @@ function isValidDate(dateString) {
     dateArr[2].length === 2;
   return boolCheck ? true : false;
 }
+async function reservationExists(req, res, next) {
+  
+  const reservation_id = res.locals.reservation_id;
+  const reservation = await service.read(reservation_id);
+  if (reservation) {
+    res.locals.reservation = reservation;
+    next();
+  } else {
+    next({ status: 404, message: `Reservation not found: ${reservation_id}` });
+  }
+}
 
+async function read(req, res) {
+  const data = res.locals.reservation;
+
+  res.status(200).json({ data });
+}
+
+async function update(req, res, next) {
+  const { reservation_id } = req.params;
+  const data = await service.update(reservation_id, req.body.data.status);
+  res.status(200).json({ data });
+}
+
+async function validateStatus(req, res, next) {
+  const status = req.body.data.status;
+  const { reservation_id } = req.params;
+  const checkReservation = await service.read(reservation_id);
+  if (checkReservation.status === "finished") {
+    next({ status: 400, message: `A finished reservation cannot be updated.` });
+  }
+  if (status !== "seated" && status !== "booked" && status !== "finished" && status !== "cancelled") {
+    return next({ status: 400, message: `Invalid status: ${status}` });
+  }
+  next();
+}
+
+async function updateReservation(req, res, next) {
+  const data = await service.updateReservation(req.body.data);
+  res.status(200).json({ data });
+}
 async function reservationWeekdayValidation(req, res, next) {
   const date = new Date(req.body.data.reservation_date);
   const isTuesday = date.getUTCDay();
@@ -37,6 +77,19 @@ async function reservationWeekdayValidation(req, res, next) {
   }
   return next();
 }
+
+async function reservationTimeValidation(req, res, next) {
+  const time = req.body.data.reservation_time;
+  if ("10:30" > time || time > "21:30") {
+    return next({
+      status: 400,
+      message: "reservation_time cannot be before 10:30AM or after 9:30PM",
+    });
+  }
+
+  return next();
+}
+
 function isValidTime(timeString) {
   const timeArr = timeString.split(":");
   const boolCheck =
@@ -105,6 +158,19 @@ async function hasProps(req, res, next) {
   }
   return next();
 }
+function hasReservationId(req, res, next) {
+  const reservation_id =
+    req.params.reservation_id || req.body?.data?.reservation_id;
+  if (reservation_id) {
+    res.locals.reservation_id = reservation_id;
+    next();
+  } else {
+    next({
+      status: 400,
+      message: `missing reservation_id`,
+    });
+  }
+}
 
 async function create(req, res) {
   const data = await service.create(req.body.data);
@@ -113,5 +179,26 @@ async function create(req, res) {
 }
 module.exports = {
   list: asyncErrorBoundary(list),
-  create: [hasProps, reservationWeekdayValidation, asyncErrorBoundary(create)],
+  create: [
+    hasProps,
+    reservationWeekdayValidation,
+    reservationTimeValidation,
+    asyncErrorBoundary(create),
+  ],
+  reservationExists: [hasReservationId, reservationExists],
+  read: [hasReservationId, reservationExists, asyncErrorBoundary(read)],
+  update: [
+    hasReservationId,
+    reservationExists,
+    validateStatus,
+    asyncErrorBoundary(update),
+  ],
+  updateReservation: [
+    hasProps,
+    reservationWeekdayValidation,
+    reservationTimeValidation,
+    hasReservationId,
+    reservationExists,
+    asyncErrorBoundary(updateReservation),
+  ],
 };
