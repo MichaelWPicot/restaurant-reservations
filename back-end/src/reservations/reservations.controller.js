@@ -15,7 +15,6 @@ function isValidDate(dateString) {
   return boolCheck ? true : false;
 }
 async function reservationExists(req, res, next) {
-  
   const reservation_id = res.locals.reservation_id;
   const reservation = await service.read(reservation_id);
   if (reservation) {
@@ -38,6 +37,15 @@ async function update(req, res, next) {
   res.status(200).json({ data });
 }
 
+async function validateCreateStatus(req, res, next) {
+  const data = req.body.data;
+  if ( data.status === "finished"||data.status==="seated") {
+    next({ status: 400, message: `Reservation status cannot be set to ${data.status} upon creation.` });
+  }
+  next();
+}
+
+
 async function validateStatus(req, res, next) {
   const status = req.body.data.status;
   const { reservation_id } = req.params;
@@ -45,7 +53,12 @@ async function validateStatus(req, res, next) {
   if (checkReservation.status === "finished") {
     next({ status: 400, message: `A finished reservation cannot be updated.` });
   }
-  if (status !== "seated" && status !== "booked" && status !== "finished" && status !== "cancelled") {
+  if (
+    status !== "seated" &&
+    status !== "booked" &&
+    status !== "finished" &&
+    status !== "cancelled"
+  ) {
     return next({ status: 400, message: `Invalid status: ${status}` });
   }
   next();
@@ -53,6 +66,7 @@ async function validateStatus(req, res, next) {
 
 async function updateReservation(req, res, next) {
   const data = await service.updateReservation(req.body.data);
+  data.people = Number(data.people);
   res.status(200).json({ data });
 }
 async function reservationWeekdayValidation(req, res, next) {
@@ -98,7 +112,15 @@ function isValidTime(timeString) {
 }
 async function list(req, res) {
   const date = req.query.date;
-  const data = await service.list(date);
+  const mobile = req.query.mobile_number;
+  let data;
+  if (date&&mobile){
+    data = await service.list(date, mobile);
+  } else if (date) {
+    data = await service.list(date, "*");
+  } else if (mobile){
+    data = await service.list("*", mobile);
+  }
   res.json({
     data,
   });
@@ -177,12 +199,24 @@ async function create(req, res) {
   data.people = Number(data.people);
   res.status(201).json({ data });
 }
+
+async function listByNumber(req, res, next) {
+  const { mobile_number } = req.query;
+  if (mobile_number) {
+    const data = await service.search(mobile_number);
+    return res.status(200).json({ data });
+  } else {
+    return next();
+  }
+}
+
 module.exports = {
-  list: asyncErrorBoundary(list),
+  list: [listByNumber, asyncErrorBoundary(list)],
   create: [
     hasProps,
     reservationWeekdayValidation,
     reservationTimeValidation,
+    validateCreateStatus,
     asyncErrorBoundary(create),
   ],
   reservationExists: [hasReservationId, reservationExists],

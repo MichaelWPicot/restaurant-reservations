@@ -11,7 +11,7 @@ function create(newReservation) {
 function list(date) {
   return knex(tableName)
     .select("*")
-    .where({ reservation_date: date })
+    .where({ reservation_date: date})
     .orderBy("reservation_time");
 }
 

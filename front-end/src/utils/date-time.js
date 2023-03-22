@@ -13,9 +13,10 @@ const timeFormat = /\d\d:\d\d/;
  *  the specified Date formatted as YYYY-MM-DD
  */
 function asDateString(date) {
-  return `${date.getFullYear().toString(10)}-${(date.getMonth() + 1)
+  const dateVal = new Date(date)
+  return `${dateVal.getFullYear().toString(10)}-${(dateVal.getMonth() + 1)
     .toString(10)
-    .padStart(2, "0")}-${date.getDate().toString(10).padStart(2, "0")}`;
+    .padStart(2, "0")}-${dateVal.getDate().toString(10).padStart(2, "0")}`;
 }
 
 /**
