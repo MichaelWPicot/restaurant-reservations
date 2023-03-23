@@ -159,4 +159,4 @@
 <br></br>
 
 ## Questions
-Questions? Reach out at [github.com/micahelwpicot](github.com/michaelwpicot)
+Questions? Reach out at [github.com/michaelwpicot](github.com/michaelwpicot)
