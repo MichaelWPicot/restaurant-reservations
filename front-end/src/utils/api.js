@@ -56,10 +56,17 @@ async function fetchJson(url, options, onCancel) {
  * Retrieves all existing reservation.
  * @returns {Promise<[reservation]>}
  *  a promise that resolves to a possibly empty array of reservation saved in the database.
- */
+ */export async function findReservation(reservation_id, signal){
+  const url = new URL(`${API_BASE_URL}/reservations/${reservation_id}`);
+  return await fetchJson(url, {
+    headers,
+    signal,
+    method: 'GET',
+  })
+}
 
 export async function listReservations(params, signal) {
-  const url = new URL(`${API_BASE_URL}/reservations?date=${params.reservation_date}`);
+  const url = new URL(`${API_BASE_URL}/reservations?date=${params}`);
   Object.entries(params).forEach(([key, value]) =>
     url.searchParams.append(key, value.toString())
   );
@@ -125,5 +132,28 @@ export async function updateStatus(reservation_id, status, signal) {
     signal,
     method: "PUT",
     body: JSON.stringify({ data: { status } }),
+  });
+}
+
+export async function search(mobile_number, signal) {
+  const url = new URL(
+    `${API_BASE_URL}/reservations?mobile_number=${mobile_number}`
+  );
+  return await fetchJson(url, {
+    headers,
+    signal,
+    method: "GET",
+  });
+}
+
+export async function editReservation(reservation, signal) {
+  const url = new URL(
+    `${API_BASE_URL}/reservations/${reservation.reservation_id}`
+  );
+  return await fetchJson(url, {
+    headers,
+    signal,
+    method: "PUT",
+    body: JSON.stringify({ data: reservation }),
   });
 }

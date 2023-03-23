@@ -16,7 +16,7 @@ const onPageConsole = (msg) =>
 describe("US-04 - Seat reservation - E2E", () => {
   let page;
   let browser;
-
+  
   beforeAll(async () => {
     await fsPromises.mkdir("./.screenshots", { recursive: true });
     setDefaultOptions({ timeout: 1000 });
@@ -159,6 +159,7 @@ describe("US-04 - Seat reservation - E2E", () => {
       });
 
       page = await browser.newPage();
+     
       page.on("console", onPageConsole);
       await page.setViewport({ width: 1920, height: 1080 });
       await page.goto(
@@ -253,8 +254,8 @@ describe("US-04 - Seat reservation - E2E", () => {
         path: ".screenshots/us-04-dashboard-seat-button-before.png",
         fullPage: true,
       });
-
-      const hrefSelector = `[href="/reservations/${reservation.reservation_id}/seat"]`;
+      const {reservation_id} = reservation;
+      const hrefSelector = `[href="/reservations/${reservation_id}/seat"]`;
 
       await page.waitForSelector(hrefSelector);
 
