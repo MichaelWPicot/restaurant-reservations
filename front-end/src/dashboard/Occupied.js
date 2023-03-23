@@ -23,7 +23,7 @@ function Occupied({ table_id }) {
     <button
       onClick={(e) => handleClick(e)}
       data-table-id-finish={`${table_id}`}
-      className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+      
     >
       Finish
     </button>

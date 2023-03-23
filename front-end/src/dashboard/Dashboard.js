@@ -13,7 +13,6 @@ import {
   formatAsDate,
 } from "../utils/date-time";
 
-
 function Dashboard({ date }) {
   const query = useQuery();
   const getDate = query.get("date");
@@ -34,7 +33,7 @@ function Dashboard({ date }) {
   function loadReservations() {
     const abortController = new AbortController();
     setError(null);
-    listReservations( date , abortController.signal)
+    listReservations(date, abortController.signal)
       .then(setReservations)
       .catch(setError);
     return () => abortController.abort();
@@ -78,46 +77,35 @@ function Dashboard({ date }) {
   const displayReservations = filteredReservations.map((reservation) => {
     const { reservation_id } = reservation;
     return (
-      <tr
-        key={reservation.reservation_id}
-        className="p-2 m-4 hover:bg-gray-300"
-      >
-        <td className="p-2 m-2">{reservation_id}</td>
-        <td className="p-2 m-2">{reservation.first_name}</td>
-        <td className="p-2 m-2">{reservation.last_name}</td>
-        <td className="p-2 m-2">{reservation.mobile_number}</td>
-        <td className="p-2 m-2">
-          {formatAsDate(reservation.reservation_date)}
-        </td>
-        <td className="p-2 m-2">
-          {formatAsTime(reservation.reservation_time)}
-        </td>
-        <td className="mb-2">{reservation.people}</td>
-        <td
-          data-reservation-id-status={reservation.reservation_id}
-          className="p-2 m-1"
-        >
+      <tr key={reservation.reservation_id}>
+        <td>{reservation_id}</td>
+        <td>{reservation.first_name}</td>
+        <td>{reservation.last_name}</td>
+        <td>{reservation.mobile_number}</td>
+        <td>{formatAsDate(reservation.reservation_date)}</td>
+        <td>{formatAsTime(reservation.reservation_time)}</td>
+        <td>{reservation.people}</td>
+        <td data-reservation-id-status={reservation.reservation_id}>
           {reservation.status}
         </td>
-        <td className="p-2 m-2">
-          <div className="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+        <td>
+          <div>
             <a href={`/reservations/${reservation.reservation_id}/edit`}>
               Edit
             </a>
           </div>
         </td>
-        <td className="p-2 m-2">
+        <td>
           <button
             data-reservation-id-cancel={reservation.reservation_id}
             onClick={(e) => handleCancelClick(e, reservation.reservation_id)}
-            className="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
           >
             Cancel
           </button>
         </td>
-        <td className="p-2 m-2">
+        <td>
           {reservation.status === "booked" ? (
-            <div className="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+            <div>
               <a href={`/reservations/${reservation_id}/seat`}>Seat</a>
             </div>
           ) : null}
@@ -128,14 +116,11 @@ function Dashboard({ date }) {
 
   let displayTables = tables.map((table) => {
     return (
-      <tr
-        className="p-2 m-2 hover:bg-gray-300 bg-gray-200"
-        key={table.table_id}
-      >
-        <td className="p-2 m-2">{table.table_id}</td>
-        <td className="p-2 m-2">{table.table_name}</td>
-        <td className="p-2 m-2">{table.capacity}</td>
-        <td className="p-2 m-2" data-table-id-status={table.table_id}>
+      <tr key={table.table_id}>
+        <td>{table.table_id}</td>
+        <td>{table.table_name}</td>
+        <td>{table.capacity}</td>
+        <td data-table-id-status={table.table_id}>
           {table.reservation_id ? "Occupied" : "Free"}
         </td>
         <td>
@@ -146,106 +131,72 @@ function Dashboard({ date }) {
   });
 
   return (
-    <main className="min-h-screen font-Staatliches">
-      <h1 className="text-center text-6xl p-10">Dashboard</h1>
+    <main>
+      <h1>Dashboard</h1>
       <ErrorAlert error={error} />
-      <div className="flex flex-col">
-        <div className="p-4 m-5 ">
-          <h4 className="text-center text-4xl mb-4">{`Reservations for ${date}`}</h4>
-          <div className="container flex justify-center mx-auto">
-            <div className="overflow-auto flex flex-col">
-              <div className="w-full">
-                <div className=" border-b border-gray-200 shadow">
-                  <table className="text-center text-xl divide-y divide-gray-300 ">
-                    <thead className="font-Inconsolata bg-gray-50">
+      <div>
+        <div>
+          <h4>{`Reservations for ${date}`}</h4>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <table>
+                    <thead>
                       <tr>
-                        <th className="px-6 py-2 text-l text-gray-500">ID</th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          First name
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Last Name
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Mobile Number
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">Date</th>
-                        <th className="px-6 py-2 text-l text-gray-500">Time</th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Party Size
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Status
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">Edit</th>
+                        <th>ID</th>
+                        <th>First name</th>
+                        <th>Last Name</th>
+                        <th>Mobile Number</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Party Size</th>
+                        <th>Status</th>
+                        <th>Edit</th>
 
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Cancel
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">Seat</th>
+                        <th>Cancel</th>
+                        <th>Seat</th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-gray-300 font-Inconsolata">
-                      {displayReservations}
-                    </tbody>
+                    <tbody>{displayReservations}</tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="p-4 m-5">
-          <h1 className="text-4xl text-center"> Tables</h1>
+        <div>
+          <h1> Tables</h1>
           <br></br>
-          <div className="container flex justify-center mx-auto">
-            <div className="flex flex-col">
-              <div className="w-full">
-                <div className="border-b border-gray-200 shadow">
-                  <table className="text-center text-xl divide-y divide-gray-300 ">
-                    <thead className="font-Inconsolata bg-gray-50">
+          <div>
+            <div>
+              <div>
+                <div>
+                  <table>
+                    <thead>
                       <tr>
-                        <th className="px-6 py-2 text-l text-gray-500">ID</th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Table Name
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Capacity
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Status
-                        </th>
-                        <th className="px-6 py-2 text-l text-gray-500">
-                          Open Table
-                        </th>
+                        <th>ID</th>
+                        <th>Table Name</th>
+                        <th>Capacity</th>
+                        <th>Status</th>
+                        <th>Open Table</th>
                       </tr>
                     </thead>
-                    <tbody className="font-Inconsolata">{displayTables}</tbody>
+                    <tbody>{displayTables}</tbody>
                   </table>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div className="m-auto pb-20">
-          <button
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-            type="button"
-            onClick={(e) => handleClick(previous(date))}
-          >
+        <div>
+          <button type="button" onClick={(e) => handleClick(previous(date))}>
             Previous
           </button>
-          <button
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-            type="button"
-            onClick={(e) => handleClick(today())}
-          >
+          <button type="button" onClick={(e) => handleClick(today())}>
             Today
           </button>
-          <button
-            className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
-            type="button"
-            onClick={(e) => handleClick(next(date))}
-          >
+          <button type="button" onClick={(e) => handleClick(next(date))}>
             Next
           </button>
         </div>

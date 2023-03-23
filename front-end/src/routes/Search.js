@@ -44,20 +44,20 @@ function Search() {
     const { reservation_id } = reservation;
     return (
       <tr key={reservation_id} className="p-2 m-4 hover:bg-gray-300">
-        <td className="p-2 m-2">{reservation_id}</td>
-        <td className="p-2 m-2">{reservation.first_name}</td>
-        <td className="p-2 m-2">{reservation.last_name}</td>
-        <td className="p-2 m-2">{reservation.mobile_number}</td>
-        <td className="p-2 m-2">
+        <td >{reservation_id}</td>
+        <td >{reservation.first_name}</td>
+        <td >{reservation.last_name}</td>
+        <td >{reservation.mobile_number}</td>
+        <td >
           {formatAsDate(reservation.reservation_date)}
         </td>
-        <td className="p-2 m-2">
+        <td >
           {formatAsTime(reservation.reservation_time)}
         </td>
-        <td className="mb-2">{reservation.people}</td>
-        <td className="p-2 m-2">{reservation.status}</td>
-        <td className="p-2 m-2">
-          <div className="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow">
+        <td >{reservation.people}</td>
+        <td >{reservation.status}</td>
+        <td >
+          <div >
             <a href={`/reservations/${reservation.reservation_id}/edit`}>
               Edit
             </a>
@@ -67,7 +67,7 @@ function Search() {
           <button
             data-reservation-id-cancel={reservation.reservation_id}
             onClick={(e) => handleCancelClick(e, reservation.reservation_id)}
-            className="mt-2 bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+
           >
             Cancel
           </button>
@@ -77,12 +77,12 @@ function Search() {
   });
 
   return (
-    <div className="min-h-screen w-full flex items-center justify-center">
-      <div className="p-8 container text-center ">
-      <h3 className="text-3xl p-8 font-Staatliches">Find a reservation</h3>
-      <form onSubmit={submitSearch} className="flex flex-col items-center justify-center">
+    <div >
+      <div >
+      <h3 >Find a reservation</h3>
+      <form onSubmit={submitSearch}>
         <input
-          className="appearance-none w-1/3 bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-8 leading-tight focus:outline-none focus:bg-white"
+          
           name="mobile_number"
           type="text"
           id="mobile_number"
@@ -91,43 +91,43 @@ function Search() {
           placeholder="Enter a phone number"
         />
         <button
-          className="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow mb-20"
+      
           type="submit"
         >
           Find
         </button>
       </form>
       <ErrorAlert error={error} />
-      <h4 className="text-center text-4xl mb-4 font-Staatliches">{`Reservations for ${number}`}</h4>
-      <div className="container flex justify-center mx-auto mb-20">
-        <div className="overflow-auto flex flex-col">
-          <div className="w-full">
-            <div className="border-b border-gray-200 shadow">
-              <table className="text-center text-xl divide-y divide-gray-300 ">
-                <thead className="font-Inconsolata bg-gray-50">
+      <h4 >{`Reservations for ${number}`}</h4>
+      <div >
+        <div >
+          <div >
+            <div >
+              <table >
+                <thead >
                   <tr>
-                    <th className="px-6 py-2 text-l text-gray-500">ID</th>
-                    <th className="px-6 py-2 text-l text-gray-500">
+                    <th >ID</th>
+                    <th >
                       First name
                     </th>
-                    <th className="px-6 py-2 text-l text-gray-500">
+                    <th >
                       Last Name
                     </th>
-                    <th className="px-6 py-2 text-l text-gray-500">
+                    <th >
                       Mobile Number
                     </th>
-                    <th className="px-6 py-2 text-l text-gray-500">Date</th>
-                    <th className="px-6 py-2 text-l text-gray-500">Time</th>
-                    <th className="px-6 py-2 text-l text-gray-500">
+                    <th >Date</th>
+                    <th >Time</th>
+                    <th >
                       Party Size
                     </th>
-                    <th className="px-6 py-2 text-l text-gray-500">Status</th>
-                    <th className="px-6 py-2 text-l text-gray-500">Edit</th>
+                    <th >Status</th>
+                    <th >Edit</th>
 
-                    <th className="px-6 py-2 text-l text-gray-500">Cancel</th>
+                    <th >Cancel</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-300 font-Inconsolata">
+                <tbody >
                   {displayReservations}
                 </tbody>
               </table>

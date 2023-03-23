@@ -71,7 +71,7 @@ function CreateTables() {
                 onChange={(e) => changeHandler(e)}
                 required
               />
-              <p className="text-red-500 text-xs italic">
+              <p >
                 Please fill out this field.
               </p>
             </div>
