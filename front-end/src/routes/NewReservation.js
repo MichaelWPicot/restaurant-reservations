@@ -25,10 +25,24 @@ function NewReservation() {
     let abortController = new AbortController();
     async function newReservation() {
       try {
+     
+        let mobileValidator = reservation.mobile_number.split("-");
+        if (mobileValidator.length===3){
+          if (parseInt(mobileValidator[0].toString()!==mobileValidator[0]||mobileValidator[0].length!==3)){
+            throw "Input mobile number in the following format before submitting 000-000-0000"
+          } else if (parseInt(mobileValidator[1].toString()!==mobileValidator[1]||mobileValidator[1].length!==3)){
+            throw "Input mobile number in the following format before submitting 000-000-0000"
+          } else if (parseInt(mobileValidator[2].toString()!==mobileValidator[2]||mobileValidator[2].length!==4)) {
+            throw "Input mobile number in the following format before submitting 000-000-0000"
+          }
+        } else if (mobileValidator.length!==1||mobileValidator[0].length!==10){
+          throw "Input mobile number in the following format before submitting 000-000-0000"
+        } else {
+          let date = reservation.reservation_date
+          setReservation(initialState)
+          history.push(`/dashboard?date=${date}`)
+        }
         await createReservation(reservation, abortController.signal)
-        let date = reservation.reservation_date
-        setReservation(initialState)
-        history.push(`/dashboard?date=${date}`)
       } catch (error) {
         setError(error);
       }
