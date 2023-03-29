@@ -68,6 +68,12 @@ function Dashboard({ date }) {
       return () => abortController.abort();
     }
   }
+  async function handleEditClick(e, reservation_id) {
+      history.push(`/reservations/${reservation_id}/edit`);
+  }
+  async function handleSeatClick(e, reservation_id) {
+    history.push(`/reservations/${reservation_id}/seat`);
+}
   let filteredReservations = reservations.filter((reservation) => {
     return (
       reservation.status !== "finished" && reservation.status !== "cancelled"
@@ -90,9 +96,9 @@ function Dashboard({ date }) {
         </td>
         <td>
           <div>
-            <a href={`/reservations/${reservation.reservation_id}/edit`}>
+            <button  onClick={(e) => handleEditClick(e, reservation.reservation_id)}>
               Edit
-            </a>
+            </button>
           </div>
         </td>
         <td>
@@ -106,7 +112,7 @@ function Dashboard({ date }) {
         <td>
           {reservation.status === "booked" ? (
             <div>
-              <a href={`/reservations/${reservation_id}/seat`}>Seat</a>
+             <button  onClick={(e) => handleSeatClick(e, reservation.reservation_id)}>Seat</button>
             </div>
           ) : null}
         </td>
