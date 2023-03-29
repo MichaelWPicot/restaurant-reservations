@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, Route, Switch, useLocation , useParams } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import NewReservation from "../routes/NewReservation";
 import NewTable from "../tables/NewTable";
@@ -23,6 +23,9 @@ function Routes() {
     const params = new URLSearchParams(search);
     return params.get("date") ? params.get("date") : today();
   }
+
+const {reservation_id} = useParams();
+
   return (
     <Switch>
       <Route exact={true} path="/">
@@ -35,13 +38,13 @@ function Routes() {
         <NewTable/>
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/seat">
-        <AssignSeat/>
+        <AssignSeat reservation_id={reservation_id}/>
       </Route>
       <Route exact={true} path="/search">
         <Search />
       </Route>
       <Route exact={true} path="/reservations/:reservation_id/edit">
-        <EditReservation />
+        <EditReservation reservation_id={reservation_id}/>
       </Route>
       <Route exact={true} path="/reservations">
         <Redirect to={"/dashboard"} />
@@ -49,7 +52,7 @@ function Routes() {
       <Route path="/dashboard">
         <Dashboard date={useQuery()} />
       </Route>
-      <Route>
+      <Route path="*">
         <NotFound />
       </Route>
     </Switch>
