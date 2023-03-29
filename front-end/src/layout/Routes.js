@@ -25,25 +25,25 @@ function Routes() {
   }
   return (
     <Switch>
-      <Route exact={true} path="/">
+      <Route path="/">
         <Redirect to={"/dashboard"} />
       </Route>
-      <Route exact={true} path="/reservations/new">
+      <Route path="/reservations/new">
         <NewReservation />
       </Route>
-      <Route exact={true} path="/tables/new">
+      <Route path="/tables/new">
         <NewTable/>
       </Route>
-      <Route exact={true} path="/reservations/:reservation_id/seat">
+      <Route path="/reservations/:reservation_id/seat">
         <AssignSeat/>
       </Route>
-      <Route exact={true} path="/search">
+      <Route path="/search">
         <Search />
       </Route>
-      <Route exact={true} path="/reservations/:reservation_id/edit">
+      <Route path="/reservations/:reservation_id/edit">
         <EditReservation />
       </Route>
-      <Route exact={true} path="/reservations">
+      <Route path="/reservations">
         <Redirect to={"/dashboard"} />
       </Route>
       <Route path="/dashboard">
