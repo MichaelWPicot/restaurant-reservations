@@ -37,18 +37,15 @@
 
 ### The Dashboard displays all current reservations by day with the default set to today's date. The dashboard also shows current tables in the restaurant with a corresponding status. From the dashboard there are links or buttons attached to each reservation and table allowing users to modify reservations, assign reservations to a table, clear a reservation from a table, or cancel a reservation.
 
-
 <br></br>
 
 ### The new reservation form allows users to add reservation details to the database. Once a reservation is added the user is redirected to the dashboard for the date of that reservation so they can see the newly added details.
-
 
 <br></br>
 
 ### The search page allows users to input a phone number and return a list of all reservations that have been made under that phone number.
 
 <br></br>
-
 ### The create table page allows users to add a new table to the database with a corresponding name and capacity field.
 
 <br>
@@ -86,7 +83,6 @@
     ]
 }
 ```
-
 ### Making a GET request to the /tables route will return: 
 ```{
     "data": [
@@ -125,7 +121,6 @@
     ]
 } 
 ```
-
 <br></br>
 
 ## Technologies
