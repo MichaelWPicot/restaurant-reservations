@@ -27,7 +27,7 @@
 |                         <div style="width:250px"> API </div>                         |                           <div style="width:250px"> Client                            |
 | :----------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------: |
 | [GitHub](https://github.com/michaelwpicot/restaurant-reservations/tree/main/back-end) | [GitHub](https://github.com/michaelwpicot/restaurant-reservations/tree/main/front-end) |
-|               [Deployed on Render](https://restaurant-reservations-backend-dnwq.onrender.com/)               |            [Deployed on Render](https://book-a-table.vercel.app/dashboard)            |
+|               [Deployed on Render](https://restaurant-reservations-backend-dnwq.onrender.com/)               |            [Deployed on Render](https://restaurant-reservations-lvfa.onrender.com/dashboard)            |
 
 <br>
 
