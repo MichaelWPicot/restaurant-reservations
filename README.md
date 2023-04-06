@@ -41,6 +41,8 @@
 
 ### The new reservation form allows users to add reservation details to the database. Once a reservation is added the user is redirected to the dashboard for the date of that reservation so they can see the newly added details.
 
+
+
 <br></br>
 ### The search page allows users to input a phone number and return a list of all reservations that have been made under that phone number.
 
