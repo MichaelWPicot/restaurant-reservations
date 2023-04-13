@@ -26,7 +26,6 @@ describe("US-02 - Create reservation on a future, working date - E2E", () => {
     await page.setViewport({ width: 1920, height: 1080 });
     await page.goto(`${baseURL}/reservations/new`, { waitUntil: "load" });
   });
-
   afterEach(async () => {
     await browser.close();
   });
